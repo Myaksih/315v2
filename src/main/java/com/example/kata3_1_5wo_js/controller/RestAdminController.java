@@ -18,7 +18,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/restAdmin")
+@RequestMapping("/api/admin")
 public class RestAdminController {
 
     private final UserService userService;
@@ -27,7 +27,12 @@ public class RestAdminController {
         this.userService = userService;
     }
 
-    @GetMapping()
+    @GetMapping("/showAccount")
+    public ResponseEntity<User> showInfoUser(Principal principal) {
+        return ResponseEntity.ok(userService.findByUsername((principal.getName())));
+    }
+
+    @GetMapping("/users")
     public ResponseEntity<List<User>> restShowAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
